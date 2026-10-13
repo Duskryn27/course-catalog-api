@@ -1,13 +1,11 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
-
 
 class CamelModel(BaseModel):
     model_config = ConfigDict(
         alias_generator=to_camel,
         validate_by_name=True,
     )
-
 
 class Course(CamelModel):
     id: str
@@ -17,9 +15,9 @@ class Course(CamelModel):
     is_elective: bool = False
     likes: int = 0
 
-class EnrollmentCreate(CamelModel):
+class EnrollmentIn(CamelModel):
     course_id: str
-    student_name: str
+    student_name: str = Field(min_length=2)
 
-class Enrollment(EnrollmentCreate):
+class Enrollment(EnrollmentIn):
     id: int
